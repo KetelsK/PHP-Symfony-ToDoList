@@ -1,12 +1,12 @@
 var idUser = $("#iduser").data("iduser");
 
 //Action du bouton "Add"
-$("#addItemBtn").click(function () {
+$("#addItemBtn").click(function() {
   AddItem();
 });
 
 //Lorsqu'on appuie sur Enter, ajoute un item
-$("#newItem").on("keyup", function (e) {
+$("#newItem").on("keyup", function(e) {
   if (e.key === "Enter" || e.keyCode === 13) {
     AddItem();
   }
@@ -19,16 +19,14 @@ function AddItem() {
     url: "/create",
     type: "POST",
     data: { text: text, iduser: idUser },
-    success: function (idLastItem) {
+    success: function(idLastItem) {
       AddItemToList(idLastItem, text, false);
     },
-    error: function () {
-      alert("not ok");
-    }
+    error: function() {}
   });
 }
 //Action du bouton supprimer
-$(document).on("click", ".itemlist__item__deletebtn", function () {
+$(document).on("click", ".itemlist__item__deletebtn", function() {
   //id de l'item a supprimer
   var idItem = $(this).data("id");
   OpenModalDeleteItem(idItem);
@@ -40,11 +38,11 @@ function OpenModalDeleteItem(idItem) {
   $("#overlay").css("display", "block");
   $("#confirmsuppression")
     .unbind("click")
-    .click(function () {
+    .click(function() {
       DeleteItem(idItem);
     });
 
-  $("#closemodalsuppression").click(function () {
+  $("#closemodalsuppression").click(function() {
     $(".modalsuppression").removeClass("modalsuppression--show");
     $("#overlay").css("display", "none");
   });
@@ -60,15 +58,13 @@ function DeleteItem(idItem) {
     url: "/delete",
     type: "POST",
     data: { id: idItem },
-    success: function () {},
-    error: function () {
-      alert("not ok");
-    }
+    success: function() {},
+    error: function() {}
   });
 }
 
 //Action bouton modifier un item
-$(document).on("click", ".itemlist__item__editbtn", function () {
+$(document).on("click", ".itemlist__item__editbtn", function() {
   var idItem = $(this).data("id");
   var inputText = $("input[data-id=" + idItem + "]");
   if (inputText.prop("disabled")) {
@@ -83,7 +79,7 @@ $(document).on("click", ".itemlist__item__editbtn", function () {
 });
 
 //Lorsqu'on appuie sur Enter, valide la modification de l'item
-$(document).on("keyup", ".itemlist__item", function (e) {
+$(document).on("keyup", ".itemlist__item", function(e) {
   var idItem = $(this).data("id");
   if (e.key === "Enter" || e.keyCode === 13) {
     EditItem(idItem);
@@ -100,21 +96,19 @@ function EditItem(idItem) {
     url: "/edit",
     type: "POST",
     data: { id: idItem, text: text },
-    success: function (isdone) {
+    success: function(isdone) {
       if (isdone) {
         inputText.addClass("itemlist__item--done");
       } else {
         inputText.removeClass("itemlist__item--done");
       }
     },
-    error: function () {
-      alert("error modification");
-    }
+    error: function() {}
   });
 }
 
 //Mettre un item en "done"
-$(document).on("click", ".checkboxdone", function () {
+$(document).on("click", ".checkboxdone", function() {
   var idItem = $(this).data("iditem");
   var isDone = $(this).is(":checked");
   SetItemAsDone(idItem, isDone);
@@ -131,19 +125,17 @@ function SetItemAsDone(idItem, isDone) {
     url: "/setisdone",
     type: "POST",
     data: { id: idItem, isdone: isDone },
-    success: function () {},
-    error: function () {
-      alert("not ok setisdone");
-    }
+    success: function() {},
+    error: function() {}
   });
 }
 
-$("#showAll").on("click", function () {
+$("#showAll").on("click", function() {
   $.ajax({
     type: "POST",
     url: "/showall",
     dataType: "json",
-    success: function (listItem) {
+    success: function(listItem) {
       $("#itemlist").empty();
       for (var i in listItem) {
         AddItemToList(listItem[i].id, listItem[i].text, listItem[i].isDone);
@@ -152,12 +144,12 @@ $("#showAll").on("click", function () {
   });
 });
 
-$("#showActive").on("click", function () {
+$("#showActive").on("click", function() {
   $.ajax({
     type: "POST",
     url: "/showactive",
     dataType: "json",
-    success: function (listItem) {
+    success: function(listItem) {
       $("#itemlist").empty();
       for (var i in listItem) {
         AddItemToList(listItem[i].id, listItem[i].text, listItem[i].isDone);
@@ -166,12 +158,12 @@ $("#showActive").on("click", function () {
   });
 });
 
-$("#showCompleted").on("click", function () {
+$("#showCompleted").on("click", function() {
   $.ajax({
     type: "POST",
     url: "/showcompleted",
     dataType: "json",
-    success: function (listItem) {
+    success: function(listItem) {
       $("#itemlist").empty();
       for (var i in listItem) {
         AddItemToList(listItem[i].id, listItem[i].text, listItem[i].isDone);
