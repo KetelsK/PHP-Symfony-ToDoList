@@ -1,0 +1,17 @@
+{
+    "sqltools.connections": [
+        {
+            "database": "todolist",
+            "driver": "MySQL",
+            "mysqlOptions": {
+                "authProtocol": "default"
+            },
+            "name": "SQL",
+            "port": 3308,
+            "previewLimit": 50,
+            "server": "localhost",
+            "username": "root",
+            "password": ""
+        }
+    ]
+}
